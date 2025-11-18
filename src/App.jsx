@@ -1,39 +1,70 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import Header from './components/Header'
-import Mahasiswa from './components/Mahasiswa'
+// import React mengimpor modul React dari pustaka react.
+import { BrowserRouter as Router, Routes, Route, NavLink } from "react-router-dom";
+// { Suspense } mengimpor komponen Suspense dari pustaka React. Suspense digunakan untuk menunda rendering komponen hingga data atau kode yang diperlukan telah siap.
+import React, { Suspense } from "react";
+
+// Biasanya, Suspense digunakan bersama React.lazy() untuk mendukung pemuatan (loading) komponen secara dinamis (lazy loading).
+const Home = React.lazy(() => import("./components/Home"));
+const FakultasList = React.lazy(() => import("./components/Fakultas/List"));
+const ProdiList = React.lazy(() => import("./components/Prodi/List"));
+const MahasiswaList = React.lazy(() => import("./components/Mahasiswa/List"));
+
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-    <Header nama= " Ritzy"/>
-    <Mahasiswa nama= " Ritzy" npm= " 2327240028" skill= " Coding"/>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Router>
+      <nav className="navbar navbar-expand-lg bg-body-tertiary">
+  <div className="container-fluid">
+    <a className="navbar-brand" href="#">
+      Navbar
+    </a>
+    <button
+      className="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span className="navbar-toggler-icon"></span>
+    </button>
+    <div className="collapse navbar-collapse" id="navbarNav">
+      <ul className="navbar-nav">
+        <li className="nav-item">
+          <NavLink className="nav-link active" aria-current="page" to="/">
+            Home
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink className="nav-link" to="/fakultas">
+            Fakultas
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink className="nav-link" to="/prodi">
+            Program Studi
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink className="nav-link" to="/mahasiswa">
+            Mahasiswa
+          </NavLink>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/fakultas" element={<FakultasList />} />
+          <Route path="/prodi" element={<ProdiList />} />
+          <Route path="/mahasiswa" element={<MahasiswaList />} />
+        </Routes>
+      </Suspense>
+    </Router>
+  );
 }
 
-export default App
+export default App;
