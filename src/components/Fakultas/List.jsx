@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 // Import axios untuk melakukan HTTP request ke API
 import axios from "axios";
-// Import Navlink untuk nnavigasi antar route
+// Import Navlink untuk navigasi antar route
 import { NavLink } from "react-router-dom";
 
 export default function FakultasList() {

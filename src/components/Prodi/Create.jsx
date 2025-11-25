@@ -1,18 +1,18 @@
 // Import useState untuk mengelola state
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // Import axios untuk melakukan HTTP request
 import axios from "axios";
-// Import useNavigate untuk navigasi
-import { useNavigate } from "react-router-dom";
 
 export default function CreateProdi() {
-  // useNavigate hook untuk redirect
-  const navigate = useNavigate();
+
+  // State untuk menyimpan list fakultas (API)
+  const [fakultas, setFakultas] = useState([]);
 
   // State untuk menyimpan nilai input form
   const [formData, setFormData] = useState({
     nama: "",
     singkatan: "",
+    fakultas_id: "",
   });
 
   // State untuk menyimpan pesan error
@@ -40,7 +40,6 @@ export default function CreateProdi() {
       return;
     }
 
-    setLoading(true);
     setError(null);
 
     try {
@@ -51,9 +50,15 @@ export default function CreateProdi() {
       );
 
       console.log("Prodi created:", response.data);
+      alert("Data berhasil disimpan!");
 
-      // Redirect ke halaman list prodi
-      navigate("/prodi");
+      // Reset form setelah berhasil
+      setFormData({
+        nama: "",
+        singkatan: "",
+        fakultas_id: "",
+      });
+      
     } catch (err) {
       console.error("Error creating prodi:", err);
       setError(
@@ -66,6 +71,35 @@ export default function CreateProdi() {
     }
   };
 
+  useEffect(() => {
+    // Fungsi async untuk fetch data dari API
+    const fetchFakultas = async () => {
+      try {
+        // Set loading true sebelum fetch data
+        setLoading(true);
+        // Mengambil data dari API menggunakan axios
+        const response = await axios.get(
+          "https://newexpresssi5a-weld.vercel.app/api/fakultas"
+        );
+        // Simpan data yang diterima ke state fakultas
+        setFakultas(response.data);
+        // Reset error jika fetch berhasil
+        setError(null);
+      } catch (err) {
+        // Jika terjadi error, simpan pesan error ke state
+        setError(err.message);
+        console.error("Error fetching fakultas:", err);
+      } finally {
+        // Set loading false setelah proses selesai (berhasil atau gagal)
+        setLoading(false);
+      }
+    };
+
+    // Panggil fungsi fetchFakultas
+    fetchFakultas();
+  }, []); // Dependency array kosong = hanya dijalankan sekali saat mount
+
+
   // Render form dengan navigasi
   return (
     <div className="container mt-5">
@@ -77,6 +111,12 @@ export default function CreateProdi() {
           {error}
         </div>
       )}
+
+        {/* Tampilkan state untuk debugging */}
+        <div className="alert alert-info">
+        <strong>State saat ini:</strong>
+        <pre>{JSON.stringify(formData, null, 2)}</pre>
+        </div>
 
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
@@ -111,20 +151,18 @@ export default function CreateProdi() {
           />
         </div>
 
+
         <div className="mb-3">
-          <label htmlFor="nama" className="form-label">
-            Nama Fakultas
+          <label htmlFor="fakultas_id" className="form-label">
+            ID Fakultas
           </label>
-          <input
-            type="text"
-            className="form-control"
-            id="fakultas_id"
-            name="fakultas_id"
-            value={formData.fakultas_id}
-            onChange={handleChange}
-            placeholder="Contoh: Fakultas Teknik"
-            disabled={loading}
-          />
+          <select name="fakultas_id" id="fakultas_id" value={formData.fakultas_id} onChange={handleChange} className="form-control">
+            {fakultas.map((fakultasItem) =>(
+              <option key={fakultasItem._id} value={fakultasItem._id}>
+                {fakultasItem.nama}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="d-flex gap-2">
