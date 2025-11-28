@@ -1,4 +1,5 @@
 // import React mengimpor modul React dari pustaka react.
+// authmiddleware untuk login baru bisa dihapus
 import { BrowserRouter as Router, Routes, Route, NavLink } from "react-router-dom";
 // { Suspense } mengimpor komponen Suspense dari pustaka React. Suspense digunakan untuk menunda rendering komponen hingga data atau kode yang diperlukan telah siap.
 import React, { Suspense } from "react";

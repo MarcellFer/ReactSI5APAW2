@@ -1,7 +1,7 @@
 // Import React untuk membuat komponen
 import { useState } from "react";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 export default function CreateFakultas() {
 
   // State untuk menyimpan nilai input form
@@ -9,6 +9,7 @@ export default function CreateFakultas() {
     nama: "",
     singkatan: "",
   });
+
 
   // Fungsi untuk handle perubahan input
   const handleChange = (e) => {
@@ -21,6 +22,8 @@ export default function CreateFakultas() {
 
     // State untuk menyimpan pesan error
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     // Fungsi untuk handle submit form
     const handleSubmit = async (e) => {
@@ -119,12 +122,15 @@ export default function CreateFakultas() {
           />
         </div>
 
-        {/* Tombol submit */}
         <div className="d-flex gap-2">
-          <button type="submit" className="btn btn-primary">
-            Simpan
+          <button type="submit" className="btn btn-primary" disabled={loading}>
+            {loading ? "Menyimpan..." : "Simpan"}
           </button>
-          <button type="button" className="btn btn-secondary">
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => navigate("/fakultas")}
+            disabled={loading}>
             Batal
           </button>
         </div>

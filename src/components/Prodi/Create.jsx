@@ -2,11 +2,13 @@
 import { useState, useEffect } from "react";
 // Import axios untuk melakukan HTTP request
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateProdi() {
 
   // State untuk menyimpan list fakultas (API)
   const [fakultas, setFakultas] = useState([]);
+  const navigate = useNavigate();
 
   // State untuk menyimpan nilai input form
   const [formData, setFormData] = useState({

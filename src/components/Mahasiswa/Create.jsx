@@ -1,5 +1,6 @@
 // Import React untuk membuat komponen
 import { useState, useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function CreateMahasiswa() {
@@ -7,6 +8,7 @@ export default function CreateMahasiswa() {
     // State untuk menyimpan list prodi
     const [prodi, setProdi] = useState([]);
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
   // State untuk menyimpan nilai input form
   const [formData, setFormData] = useState({

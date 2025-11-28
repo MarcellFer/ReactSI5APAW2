@@ -4,8 +4,42 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 // Import Navlink untuk navigasi antar route
 import { NavLink } from "react-router-dom";
+import Swal  from "sweetalert2";
 
 export default function MahasiswaList() {
+  // Fungsi untuk delete
+  const handleDelete = (id, nama) => {
+    Swal.fire({
+  title: "Are you sure wanna delete " + nama + "?",
+  text: "You won't be able to revert this!",
+  icon: "warning",
+  showCancelButton: true,
+  confirmButtonColor: "#3085d6",
+  cancelButtonColor: "#d33",
+  confirmButtonText: "Yes, delete it!"
+}).then((result) => {
+  if (result.isConfirmed) {
+    axios.delete(`https://newexpresssi5a-weld.vercel.app/api/mahasiswa/${id}`).then((response) => {
+      //Hapus mahasiswa 
+      setMahasiswa(mahasiswa.filter((f) => f.id !== id));
+      // Tampilkan notifikasi sukses
+      Swal.fire({
+        title: "Deleted!",
+        text: "Your file has been deleted.",
+        icon: "success"
+      });
+    }).catch((error) => {
+      console.error("Error deleting data:", error); //Menangani error
+      Swal.fire(
+        "Error",
+        "There was an issue deleting the data.",
+        "error"
+        );
+      });
+    };
+    });
+  };
+
   // State untuk menyimpan data fakultas dari API
   const [mahasiswa, setMahasiswa] = useState([]);
   // State untuk menandakan proses loading data
@@ -63,6 +97,7 @@ export default function MahasiswaList() {
             <th>Tanggal Lahir</th>
             <th>Prodi</th>
             <th>Fakultas</th>
+            <th>Aksi</th>
           </tr>
         </thead>
         <tbody>
@@ -73,9 +108,10 @@ export default function MahasiswaList() {
               <td>{mhs.npm}</td>
               <td>{mhs.nama}</td>
               <td>{mhs.tempat_lahir}</td>
-              <td>{mhs.tanggal_lahir}</td>
+              <td>{new Date(mhs.tanggal_lahir).toLocaleString('id-ID')}</td>
               <td>{mhs.prodi_id ? mhs.prodi_id.nama : null}</td>
-              <td>{mhs.prodi_id.fakultas_id ? mhs.prodi_id.fakultas_id.nama : null}</td>
+              <td>{mhs.prodi_id ? mhs.prodi_id.fakultas_id.nama : null}</td>
+              <td><button className="btn btn-danger" onClick={() => handleDelete(mhs._id, mhs.nama)}>Hapus</button></td>
             </tr>
           ))}
         </tbody>
