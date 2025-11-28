@@ -75,7 +75,7 @@ export default function MahasiswaList() {
               <td>{mhs.tempat_lahir}</td>
               <td>{mhs.tanggal_lahir}</td>
               <td>{mhs.prodi_id ? mhs.prodi_id.nama : null}</td>
-              <td>{mhs.prodi_id.fakultas_id.nama}</td>
+              <td>{mhs.prodi_id.fakultas_id ? mhs.prodi_id.fakultas_id.nama : null}</td>
             </tr>
           ))}
         </tbody>

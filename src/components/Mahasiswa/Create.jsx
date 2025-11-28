@@ -6,6 +6,7 @@ export default function CreateMahasiswa() {
 
     // State untuk menyimpan list prodi
     const [prodi, setProdi] = useState([]);
+    const [loading, setLoading] = useState(false);
 
   // State untuk menyimpan nilai input form
   const [formData, setFormData] = useState({
@@ -134,7 +135,7 @@ export default function CreateMahasiswa() {
             className="form-control"
             id="npm"
             name="npm"
-            value={formData.nama}
+            value={formData.npm}
             onChange={handleChange}
             placeholder="Contoh: 1234567890"
           />
@@ -157,7 +158,7 @@ export default function CreateMahasiswa() {
 
         {/* Input field untuk singkatan fakultas */}
         <div className="mb-3">
-          <label htmlFor="singkatan" className="form-label">
+          <label htmlFor="tempat_lahir" className="form-label">
             Tempat Lahir
           </label>
           <input
@@ -165,17 +166,32 @@ export default function CreateMahasiswa() {
             className="form-control"
             id="tempat_lahir"
             name="tempat_lahir"
-            value={formData.singkatan}
+            value={formData.tempat_lahir}
             onChange={handleChange}
             placeholder="Contoh: Palembang"
           />
         </div>
 
         <div className="mb-3">
+          <label htmlFor="tanggal_lahir" className="form-label">
+            Tanggal Lahir
+          </label>
+          <input
+            type="date"
+            className="form-control"
+            id="tanggal_lahir"
+            name="tanggal_lahir"
+            value={formData.tanggal_lahir}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="mb-3">
           <label htmlFor="prodi_id" className="form-label">
-            ID Prodi
+            Prodi
           </label>
           <select name="prodi_id" id="prodi_id" value={formData.prodi_id} onChange={handleChange} className="form-control">
+            <option value="">Pilih Prodi</option>
             {prodi.map((prodiItem) =>(
               <option key={prodiItem._id} value={prodiItem._id}>
                 {prodiItem.nama}
@@ -185,12 +201,15 @@ export default function CreateMahasiswa() {
         </div>
 
 
-        {/* Tombol submit */}
         <div className="d-flex gap-2">
-          <button type="submit" className="btn btn-primary">
-            Simpan
+          <button type="submit" className="btn btn-primary" disabled={loading}>
+            {loading ? "Menyimpan..." : "Simpan"}
           </button>
-          <button type="button" className="btn btn-secondary">
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => navigate("/mahasiswa")}
+            disabled={loading}>
             Batal
           </button>
         </div>
