@@ -104,6 +104,7 @@ export default function FakultasList() {
             <tr key={fak._id}>
               <td>{fak.nama}</td>
               <td>{fak.singkatan}</td>
+              <NavLink to={`/fakultas/edit/${fak._id}`}className="btn btn-warning me-2">Ubah</NavLink>
               <td><button className="btn btn-danger" onClick={() => handleDelete(fak._id, fak.nama)}>Hapus</button></td>
             </tr>
           ))}
