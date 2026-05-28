@@ -175,7 +175,7 @@ export default function EditFakultas() {
             onClick={() => navigate("/fakultas")}
             disabled={loading}
           >
-            Batal
+            Batal Beroperasi
           </button>
         </div>
       </form>
